@@ -1,9 +1,11 @@
 .camera-root {
-  min-height: calc(100vh - 160px);
+  flex: 1;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
+  box-sizing: border-box;
 }
 
 .camera-card {

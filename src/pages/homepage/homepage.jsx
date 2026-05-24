@@ -66,6 +66,7 @@ export function HomePage() {
     setTimeout(() => {
       setStatusMsg("Face recognized! Welcome back!");
       setStatusTone("success");
+      navigate("/registerconfirm", { state: { verified: true } });
     }, 1400);
   }
 

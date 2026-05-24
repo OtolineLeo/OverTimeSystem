@@ -47,6 +47,12 @@ export function LoginPage() {
 
         <button type="submit">Login</button>
       </form>
+
+      <p className={styles.helperText}>
+        <button type="button" className={styles.linkButton} onClick={() => navigate('/resetpassword')}>
+          Reset password
+        </button>
+      </p>
     </div>
   );
 }
