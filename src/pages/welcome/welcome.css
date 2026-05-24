@@ -1,0 +1,29 @@
+.welcome-page {
+  min-height: calc(90.3vh - 160px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  overflow: hidden;
+  background-color: rgb(10, 61, 79);
+}
+
+.welcome-image-frame {
+  height: min(70vh, 620px);
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgb(17, 86, 102);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-image {
+  width: 103%;
+  height: 103%;
+  object-fit: cover;
+  display: block;
+  object-position: center;
+  transition: opacity 0.8s ease;
+}

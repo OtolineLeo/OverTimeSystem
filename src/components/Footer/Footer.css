@@ -1,0 +1,49 @@
+.footer {
+  background-color: rgb(17, 86, 102);
+  color: #fff;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-brand,
+.footer-support,
+.footer-copy {
+  margin: 0;
+}
+
+.footer-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.footer-support {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+.footer-support-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.footer-alert {
+  font-size: 1.1rem;
+}
+
+.footer-emergency {
+  font-weight: 600;
+}
+
+.footer-copy {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
