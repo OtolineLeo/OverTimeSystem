@@ -5,20 +5,34 @@ import styles from './register.module.css';
 export function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const AllowedDomains = ['outlook.com', 'yahoo.com', 'gmail.com', 'icloud.com', 'hotmail.com'];
 
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const emailDomain = email.split('@')[1]?.toLowerCase();
+    if(!AllowedDomains.includes(emailDomain)) {
+      alert(`Email must be from: ${AllowedDomains.join(', ')}`);
+      return;
+    }
+
+    if(!address.toLowerCase().includes('street')) {
+      alert('Address must contain a street (e.g. "123 Main Street").');
+      return;
+    }
+
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
 
-    if (name && email && password) {
+    if (name && email && address && password) {
       navigate('/login');
     }
   }
@@ -47,6 +61,18 @@ export function RegisterPage() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className={styles.input}
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="address" className={styles.label}>Address</label>
+            <input
+              type="text"
+              id="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
               className={styles.input}
               required
             />
