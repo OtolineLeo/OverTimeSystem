@@ -8,7 +8,7 @@ export function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [step, setStep] = useState(1);
-  const [message, setMessage] = useState("Type your email to receive the reset code.");
+  const [message, setMessage] = useState("Digite seu email para receber o código de redefinição.");
   const [isSending, setIsSending] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -20,54 +20,54 @@ export function ResetPasswordPage() {
 
   const sendCode = () => {
     if (!emailValid) {
-      setMessage("Please enter a valid email address.");
+      setMessage("Por favor, insira um endereço de email válido.");
       return;
     }
 
     setIsSending(true);
-    setMessage("Sending the code to your email...");
+    setMessage("Enviando o código para seu email...");
 
     window.setTimeout(() => {
       setIsSending(false);
       setStep(2);
-      setMessage(`Code sent to ${email}. Use the code ${fakeCode} to continue.`);
+      setMessage(`Código enviado para ${email}. Use o código ${fakeCode} para continuar.`);
     }, 1200);
   };
 
   const verifyCode = () => {
     if (code.trim().length < 6) {
-      setMessage("Please enter the complete 6-digit code.");
+      setMessage("Por favor, insira o código completo de 6 dígitos.");
       return;
     }
 
     if (code !== fakeCode) {
-      setMessage("Incorrect code. Please try again.");
+      setMessage("Código incorreto. Por favor, tente novamente.");
       return;
     }
 
     setStep(3);
-    setMessage("Code confirmed. Now define your new password.");
+    setMessage("Código confirmado. Agora defina sua nova senha.");
   };
 
   const resetPassword = (event) => {
     event.preventDefault();
 
     if (!passwordValid) {
-      setMessage("Password must be at least 8 characters long.");
+      setMessage("A senha deve ter pelo menos 8 caracteres.");
       return;
     }
 
     if (!passwordsMatch) {
-      setMessage("Passwords do not match. Please try again.");
+      setMessage("As senhas não coincidem. Por favor, tente novamente.");
       return;
     }
 
     setIsSaving(true);
-    setMessage("Updating your password...");
+    setMessage("Atualizando sua senha...");
 
     window.setTimeout(() => {
       setIsSaving(false);
-      setMessage("Password reset successfully! You can now log in.");
+      setMessage("Senha redefinida com sucesso! Você pode agora fazer login.");
       window.setTimeout(() => navigate("/login"), 1600);
     }, 1400);
   };
@@ -75,10 +75,10 @@ export function ResetPasswordPage() {
   return (
     <div className="resetpage-root">
       <div className="resetpage-card">
-        <p className="resetpage-kicker">Reset Password</p>
-        <h1 className="resetpage-title">Recover Access to Your Account</h1>
+        <p className="resetpage-kicker">Resetar senha</p>
+        <h1 className="resetpage-title">Recuperar acesso à sua conta</h1>
         <p className="resetpage-description">
-          We've sent a verification code to the email address you provided. Next, choose a new password and confirm everything in just a few steps.
+          Enviamos um código de verificação para o endereço de email que você forneceu. Em seguida, escolha uma nova senha e confirme tudo em apenas alguns passos.
         </p>
 
         <div className="resetpage-progress" aria-label="Progresso do fluxo">
@@ -88,8 +88,8 @@ export function ResetPasswordPage() {
               className={`resetpage-step ${step >= item ? "active" : ""}`}
             >
               {item === 1 && "1. E-mail"}
-              {item === 2 && "2. Code verification"}
-              {item === 3 && "3. New Password"}
+              {item === 2 && "2. Verificação de codigo"}
+              {item === 3 && "3. Nova senha"}
             </span>
           ))}
         </div>
@@ -119,7 +119,7 @@ export function ResetPasswordPage() {
               onClick={sendCode}
               disabled={isSending}
             >
-              {isSending ? "Sending..." : "Send Code"}
+              {isSending ? "Enviando..." : "Requesição enviada"}
             </button>
           </div>
         )}
@@ -127,7 +127,7 @@ export function ResetPasswordPage() {
         {step === 2 && (
           <div className="resetpage-form">
             <label className="resetpage-label" htmlFor="code">
-              Verification Code
+              Codigo de verificação
             </label>
             <input
               id="code"
@@ -153,7 +153,7 @@ export function ResetPasswordPage() {
                 className="resetpage-button primary"
                 onClick={verifyCode}
               >
-                Confirm Code
+                Confirmar código
               </button>
             </div>
           </div>
@@ -162,7 +162,7 @@ export function ResetPasswordPage() {
         {step === 3 && (
           <form className="resetpage-form" onSubmit={resetPassword}>
             <label className="resetpage-label" htmlFor="newPassword">
-              New Password
+              Nova senha
             </label>
             <input
               id="newPassword"
@@ -175,7 +175,7 @@ export function ResetPasswordPage() {
             />
 
             <label className="resetpage-label" htmlFor="confirmPassword">
-              Confirm Password
+              Confirmar nova senha
             </label>
             <input
               id="confirmPassword"
@@ -193,14 +193,14 @@ export function ResetPasswordPage() {
                 className="resetpage-button secondary"
                 onClick={() => setStep(2)}
               >
-                Back
+                Voltar
               </button>
               <button
                 type="submit"
                 className="resetpage-button primary"
                 disabled={isSaving}
               >
-                {isSaving ? "Updating..." : "Reset Password"}
+                {isSaving ? "Atualizando..." : "Redefinir senha"}
               </button>
             </div>
           </form>
@@ -211,7 +211,7 @@ export function ResetPasswordPage() {
           className="resetpage-link"
           onClick={() => navigate("/login")}
         >
-          Back to Login
+          Voltar para o login
         </button>
       </div>
     </div>

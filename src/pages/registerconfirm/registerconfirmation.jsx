@@ -12,22 +12,22 @@ export function RegisterConfirmationPage() {
           👍
         </div>
 
-        <p className="confirmation-kicker">Verification finished!</p>
+        <p className="confirmation-kicker">Verificação concluída!</p>
         <h1 className="confirmation-title">
-          {verified ? "Photo registered!" : "Confirmation completed"}
+          {verified ? "Foto registrada!" : "Confirmação concluída"}
         </h1>
         <p className="confirmation-description">
-          Your photo has been successfully verified and registered in the system. Thank you for completing the face scan process.
+          Sua foto foi verificada e registrada com sucesso no sistema. Obrigado por concluir o processo de digitalização facial.
         </p>
 
         <div className="confirmation-badges">
-          <span className="confirmation-badge">✅ Verificated</span>
-          <span className="confirmation-badge">📷 Photo registered</span>
+          <span className="confirmation-badge">✅ Verificada</span>
+          <span className="confirmation-badge">📷 Foto registrada</span>
         </div>
 
         <div className="confirmation-actions">
           <Link to="/" className="confirmation-link">
-            Back to Main Page
+            Voltar para o início
           </Link>
         </div>
       </div>

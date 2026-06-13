@@ -5,12 +5,55 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
+  padding: 24px 16px;
+}
+
+.kicker {
+  margin: 0;
+  color: rgb(17, 86, 102);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .welcomeText {
   color: #0f2d3d;
   font-size: 1.4rem;
-  margin-bottom: 20px;
+  margin: 0;
+  text-align: center;
+}
+
+.progress {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  width: min(100%, 560px);
+}
+
+.stepLabel {
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: #fff;
+}
+
+.activeStep {
+  background: rgb(17, 86, 102);
+  border-color: rgb(17, 86, 102);
+  color: #fff;
+}
+
+.statusMessage {
+  width: min(100%, 560px);
+  text-align: center;
+  color: #334155;
+  font-weight: 600;
+  margin: 0;
 }
 
 .form {
@@ -52,19 +95,103 @@
   color: rgb(17, 86, 102);
 }
 
-.button {
+.videoWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.videoPlaceholder {
+  width: 100%;
+  min-height: 240px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 20px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  font-weight: 700;
+  text-align: center;
+  padding: 16px;
+}
+
+.video {
+  width: 100%;
+  max-width: 420px;
+  min-height: 240px;
+  border-radius: 20px;
+  background: #0f172a;
+  object-fit: cover;
+}
+
+.btnRow {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button,
+.secondaryButton {
   border: 0;
   border-radius: 999px;
   padding: 12px 16px;
-  background: rgb(17, 86, 102);
-  color: #fff;
   font-weight: 700;
   cursor: pointer;
-  margin-top: 30px;
+  transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
 }
 
-.button:hover {
-  background: rgb(10, 61, 79);
+.button {
+  background: rgb(17, 86, 102);
+  color: #fff;
+}
+
+.button:hover:not(:disabled),
+.secondaryButton:hover:not(:disabled) {
   opacity: 0.9;
   transform: translateY(1px);
 }
+
+.button:hover:not(:disabled) {
+  background: rgb(10, 61, 79);
+}
+
+.secondaryButton {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.button:disabled,
+.secondaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.confirmRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+  color: #0f172a;
+}
+
+.confirmRow span {
+  color: #475569;
+  font-weight: 600;
+}
+
+.linkButton {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: rgb(17, 86, 102);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.linkButton:hover {
+  text-decoration: underline;
+} 

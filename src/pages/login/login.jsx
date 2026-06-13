@@ -18,7 +18,7 @@ export function LoginPage() {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.welcomeText}>Hello.. Type your credentials</h3>
+      <h3 className={styles.welcomeText}>Olá! Digite suas credenciais</h3>
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={`${styles.textbox}${email ? ` ${styles.filled}` : ''}`}>
@@ -42,7 +42,7 @@ export function LoginPage() {
             autoComplete="current-password"
             required
           />
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Senha</label>
         </div>
 
         <button type="submit">Login</button>
@@ -50,7 +50,7 @@ export function LoginPage() {
 
       <p className={styles.helperText}>
         <button type="button" className={styles.linkButton} onClick={() => navigate('/resetpassword')}>
-          Reset password
+          Resetar senha
         </button>
       </p>
     </div>

@@ -19,8 +19,8 @@ export function Navbar() {
         </button>
       </div>
       <div className="right">
-        <Button onClick={() => navigate('/register')}>Sign In</Button>
-        <Button onClick={() => navigate('/login')}>Login</Button>
+        <Button onClick={() => navigate('/register')}>Registrar</Button>
+        <Button onClick={() => navigate('/login')}>Entrar</Button>
       </div>
     </nav>
   );

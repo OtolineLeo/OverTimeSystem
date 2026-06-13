@@ -7,8 +7,8 @@ export function HomePage() {
   const streamRef = useRef(null);
 
   const [isLive, setIsLive] = useState(false);
-  const [statusMsg, setStatusMsg] = useState("Click the button to start the camera");
-  const [statusTone, setStatusTone] = useState("neutral");
+  const [statusMsg, setStatusMsg] = useState("Clique no botão para iniciar a câmera.");
+  const [statusTone, setStatusTone] = useState("natural");
 
   const navigate = useNavigate();
 
@@ -36,10 +36,10 @@ export function HomePage() {
       }
 
       setIsLive(true);
-      setStatusMsg("Camera is live. Click the button to stop.");
+      setStatusMsg("Câmera está ativa. Clique no botão para parar.");
       setStatusTone("success");
     } catch {
-      setStatusMsg("Unable to access the camera. Please allow camera permissions and try again.");
+      setStatusMsg("Não foi possível acessar a câmera. Por favor, permita o acesso à câmera e tente novamente.");
       setStatusTone("error");
     }
   }
@@ -55,16 +55,16 @@ export function HomePage() {
     }
 
     setIsLive(false);
-    setStatusMsg("Camera stopped. Click the button to start.");
-    setStatusTone("neutral");
+    setStatusMsg("âmera parada. Clique no botão para iniciar.");
+    setStatusTone("natural");
   }
 
   function simulateRecognition() {
-    setStatusMsg("Recognizing...");
+    setStatusMsg("Reconhecendo...");
     setStatusTone("neutral");
 
     setTimeout(() => {
-      setStatusMsg("Face recognized! Welcome back!");
+      setStatusMsg("Rosto reconhecido! Bem-vindo de volta!");
       setStatusTone("success");
       navigate("/registerconfirm", { state: { verified: true } });
     }, 1400);
@@ -75,7 +75,7 @@ export function HomePage() {
       <div className="camera-card">
 
         <div className="card-header">
-          <span className="card-title">FaceScan Confirmation</span>
+          <span className="card-title">FaceScan Confirmação</span>
           <span className={`status-pill${isLive ? " live" : ""}`}>
             <span className="status-dot" />
             {isLive ? "online" : "offline"}
@@ -93,7 +93,7 @@ export function HomePage() {
                 <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
               </svg>
             </div>
-            <span className="overlay-text">camera deactivated</span>
+            <span className="overlay-text">câmera desativada</span>
           </div>
           <video
             ref={videoRef}

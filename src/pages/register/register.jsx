@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './register.module.css';
 
@@ -9,39 +9,148 @@ export function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+  const [isLive, setIsLive] = useState(false);
+  const [photoTaken, setPhotoTaken] = useState(false);
+  const [capturedDescriptor, setCapturedDescriptor] = useState(null);
+
+  const [step, setStep] = useState(1);
+  const [message, setMessage] = useState('Complete seus dados.');
+  const [isSaving, setIsSaving] = useState(false);
+
   const AllowedDomains = ['outlook.com', 'yahoo.com', 'gmail.com', 'icloud.com', 'hotmail.com'];
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  // Validações
 
-    const emailDomain = email.split('@')[1]?.toLowerCase();
-    if(!AllowedDomains.includes(emailDomain)) {
-      alert(`Email must be from: ${AllowedDomains.join(', ')}`);
+  const emailDomain = email.split("@")[1]?.toLowerCase();
+  const emailValid = useMemo(
+    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && AllowedDomains.includes(emailDomain),
+    [email, emailDomain]
+  );
+
+  const addressValid = useMemo(() => address.toLowerCase().includes("rua"), [address]);
+  const passwordValid = useMemo(() => password.length >= 8, [password]);
+  const passwordsMatch = password && password === confirmPassword;
+
+  useEffect(() => {
+    return () => stopCamera();
+  }, []);
+
+  // Step 1 and 2
+
+  function goToCamera(e){
+    e.preventDefault();
+
+    if(!emailValid){
+      setMessage(`Email deve ser de um dos seguintes domínios: ${ALLOWED_DOMAINS.join(", ")}`);
       return;
     }
 
-    if(!address.toLowerCase().includes('street')) {
-      alert('Address must contain a street (e.g. "123 Main Street").');
+    if(!addressValid){
+      setMessage("Endereço deve conter 'Rua' (e.x. '123 Rua Principal').");
       return;
     }
 
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+    if (!passwordValid) {
+      setMessage("Senha deve ter pelo menos 8 caracteres.");
       return;
     }
 
-    if (name && email && address && password) {
-      navigate('/login');
+    if (!passwordsMatch) {
+      setMessage("As senhas não coincidem. Por favor, confirme sua senha.");
+      return;
+    }
+
+    setStep(2);
+    setMessage("Agora, vamos capturar uma foto do seu rosto para reconhecimento facial. Clique no botão para abrir a câmera.");
+  }
+
+  // Camera Helpers
+
+  async function startCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: false,
+      });
+
+      streamRef.current = stream;
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play();
+      }
+
+      setIsLive(true);
+      setMessage("Câmera ativada. Clique no botão para capturar sua foto.");
+    } catch {
+      setMessage("Não foi possível acessar a câmera. Por favor, permita o acesso à câmera e tente novamente.");
     }
   }
 
-    return (
-      <div className={styles.container}>
-        <h3 className={styles.welcomeText}>Welcome.. Register now</h3>
+  function stopCamera() {
+    if (!streamRef.current) return;
+    streamRef.current.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    if (videoRef.current) videoRef.current.srcObject = null;
+    setIsLive(false);
+  }
 
-        <form onSubmit={handleSubmit} className={styles.form}>
+  async function capturePhoto() {
+    if(!videoRef.current) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.vudeoHeight;
+    canvas.getContext("2d").drawImage(videoRef.current, 0, 0);
+    const photoBase64 = canvas.toDataURL("image/jpeg");
+    
+    setCapturedDescriptor(photoBase64);
+    setPhotoTaken(true);
+    stopCamera();
+    setMessage("Foto capturada! Clique em 'Próximo' para concluir o registro.");
+  }
+
+  // Step 3
+
+  function handleFinalSubmit(){
+    setIsSaving(true);
+    setMessage("Salvando seus dados...");
+
+    setTimeout(() => {
+      setIsSaving(false);
+      setMessage("Conta criada com sucesso! Redirecionando para o login...");
+      setTimeout(() => navigate("/login"), 1600);
+    }, 1400);
+  }
+
+
+    return (
+    <div className={styles.container}>
+      <p className={styles.kicker}>Criar Conta</p>
+      <h1 className={styles.welcomeText}>Bem-vindo.. Cadastre-se agora</h1>
+
+      {/* Progress steps */}
+      <div className={styles.progress}>
+        {["1. Seus Dados", "2. Foto do Rosto", "3. Confirmar"].map((label, i) => (
+          <span
+            key={i}
+            className={`${styles.stepLabel} ${step >= i + 1 ? styles.activeStep : ""}`}
+          >
+            {label}
+          </span>
+        ))}
+      </div>
+
+      <div className={styles.statusMessage} role="status">
+        {message}
+      </div>
+
+      {step === 1 && (
+        <form onSubmit={goToCamera} className={styles.form}>
           <div className={styles.formGroup}>
             <label htmlFor="name" className={styles.label}>Name</label>
             <input
@@ -79,7 +188,7 @@ export function RegisterPage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.label}>Password</label>
+            <label htmlFor="password" className={styles.label}>Senha</label>
             <input
               type="password"
               id="password"
@@ -91,7 +200,7 @@ export function RegisterPage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="confirmPassword" className={styles.label}>Confirm Password</label>
+            <label htmlFor="confirmPassword" className={styles.label}>Confirmar Senha</label>
             <input
               type="password"
               id="confirmPassword"
@@ -103,9 +212,121 @@ export function RegisterPage() {
           </div>
 
           <button type="submit" className={styles.button}>
-            Register
+            Próximo →
           </button>
         </form>
-      </div>
-    )
+      )}
+
+      {step === 2 && (
+        <div className={styles.form}>
+          <div className={styles.videoWrapper}>
+            {!isLive && !photoTaken && (
+              <div className={styles.videoPlaceholder}>
+                <span>📷 Câmera não iniciada</span>
+              </div>
+            )}
+            {photoTaken && !isLive && (
+              <div className={styles.videoPlaceholder}>
+                <span>✅ Foto capturada</span>
+              </div>
+            )}
+            <video
+              ref={videoRef}
+              className={styles.video}
+              autoPlay
+              muted
+              playsInline
+              style={{ display: isLive ? "block" : "none" }}
+            />
+          </div>
+            
+          <div className={styles.btnRow}>
+            <button
+              type="button"
+              className={styles.button}
+              onClick={startCamera}
+              disabled={isLive || photoTaken}
+            >
+              ▶ Iniciar Câmera
+            </button>
+            <button
+              type="button"
+              className={styles.button}
+              onClick={capturePhoto}
+              disabled={!isLive}
+            >
+              📸 Capturar Foto
+            </button>
+          </div>
+
+          {photoTaken && (
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              onClick={() => {
+                setPhotoTaken(false);
+                setCapturedDescriptor(null);
+                setMessage("Câmera reiniciada. Abra a câmera e tente novamente.");
+              }}
+            >
+              ↺ Tirar outra foto
+            </button>
+          )}
+
+          <div className={styles.btnRow}>
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              onClick={() => { stopCamera(); setStep(1); setMessage("Preencha seus dados para começar."); }}
+            >
+              ← Voltar
+            </button>
+            <button
+              type="button"
+              className={styles.button}
+              onClick={() => { setStep(3); setMessage("Revise seus dados e confirme o registro."); }}
+              disabled={!photoTaken}
+            >
+              Próximo →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className={styles.form}>
+          <div className={styles.confirmRow}><span>Nome</span><strong>{name}</strong></div>
+          <div className={styles.confirmRow}><span>Email</span><strong>{email}</strong></div>
+          <div className={styles.confirmRow}><span>Endereço</span><strong>{address}</strong></div>
+          <div className={styles.confirmRow}><span>Foto</span><strong>✅ Capturada</strong></div>
+
+          <div className={styles.btnRow}>
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              onClick={() => { setStep(2); setMessage("Você pode tirar outra foto se quiser."); }}
+            >
+              ← Voltar
+            </button>
+            <button
+              type="button"
+              className={styles.button}
+              onClick={handleFinalSubmit}
+              disabled={isSaving}
+            >
+              {isSaving ? "Salvando..." : "✓ Confirmar Registro"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      <button
+        type="button"
+        className={styles.linkButton}
+        onClick={() => navigate("/login")}
+      >
+        Já tem uma conta? Entrar
+      </button>
+    </div>
+  );
 }
