@@ -119,7 +119,7 @@ export function ResetPasswordPage() {
               onClick={sendCode}
               disabled={isSending}
             >
-              {isSending ? "Enviando..." : "Requesição enviada"}
+              {isSending ? "Enviando..." : "Enviar requisição"}
             </button>
           </div>
         )}

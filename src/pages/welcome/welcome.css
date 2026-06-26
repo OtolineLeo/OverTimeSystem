@@ -1,5 +1,6 @@
 .welcome-page {
-  min-height: calc(90.3vh - 160px);
+  min-height: 0;
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
