@@ -13,7 +13,7 @@ export function Footer() {
       <div className="footer-support">
         <div className="footer-support-line">
           <span className="footer-alert">🚨</span>
-          <span className="footer-emergency">Emergência: 911</span>
+          <span className="footer-emergency">Emergência: 192 Samu / 193 Bomberos / 190 Policia</span>
         </div>
         <Button onClick={() => alert('Suporte solicitado!')}>Ajuda</Button>
       </div>
